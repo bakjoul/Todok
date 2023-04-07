@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/task_item_project_color"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:src="@drawable/bkg_oval"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:tint="@sample/tasks.json/data/backgroundTint" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/task_item_delete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/task_item_delete"
+        app:layout_constraintStart_toEndOf="@+id/task_item_project_color"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/task_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="@sample/tasks.json/data/taskName" />
+
+        <TextView
+            android:id="@+id/task_item_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="16sp"
+            tools:text="@sample/tasks.json/data/projectName" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

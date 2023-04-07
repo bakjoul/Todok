@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Todok</string>
+    <string name="no_task">Tu n’as aucune tâche à traiter</string>
+    <string name="add_task">Ajouter une tâche</string>
+    <string name="task_name_hint">Nom de la tâche</string>
+    <string name="project_spinner_hint">Projet</string>
+    <string name="add_button">Ajouter</string>
+    <string name="add_task_spinner_hint">Nom du projet</string>
+</resources>
