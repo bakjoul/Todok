@@ -1,10 +1,9 @@
 package com.example.todok.ui.tasks
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
+import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
 
 class TasksFragment : Fragment() {
@@ -22,12 +21,37 @@ class TasksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = TaskFragmentBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actions, menu)
+    }
+
+    // TODO Add menu item click handling
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.filter_alphabetical -> {
+                true
+            }
+            R.id.filter_alphabetical_inverted -> {
+                true
+            }
+            R.id.filter_oldest_first -> {
+                true
+            }
+            R.id.filter_recent_first -> {
+                true
+            }
+            else -> false
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
