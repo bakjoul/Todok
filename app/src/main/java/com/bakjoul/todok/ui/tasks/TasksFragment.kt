@@ -5,7 +5,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TasksFragment : Fragment() {
 
     companion object {
