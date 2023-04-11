@@ -1,13 +1,15 @@
 package com.example.todok.ui.tasks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class TasksFragment : Fragment() {
 
     companion object {
@@ -23,37 +25,44 @@ class TasksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = TaskFragmentBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setMenu()
         super.onViewCreated(view, savedInstanceState)
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.actions, menu)
-    }
+    private fun setMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.actions, menu)
+            }
 
-    // TODO Add menu item click handling
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.filter_alphabetical -> {
-                true
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.filter_alphabetical -> {
+                        Log.d("test", "onMenuItemSelected: 1")
+                        true
+                    }
+                    R.id.filter_alphabetical_inverted -> {
+                        Log.d("test", "onMenuItemSelected: 2")
+                        true
+                    }
+                    R.id.filter_oldest_first -> {
+                        Log.d("test", "onMenuItemSelected: 3")
+                        true
+                    }
+                    R.id.filter_recent_first -> {
+                        Log.d("test", "onMenuItemSelected: 4")
+                        true
+                    }
+                    else -> false
+                }
+                return false
             }
-            R.id.filter_alphabetical_inverted -> {
-                true
-            }
-            R.id.filter_oldest_first -> {
-                true
-            }
-            R.id.filter_recent_first -> {
-                true
-            }
-            else -> false
-        }
-        return super.onOptionsItemSelected(item)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onDestroy() {
