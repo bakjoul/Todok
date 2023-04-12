@@ -11,4 +11,7 @@
     <string name="sorting_alphabetic_inverted"><![CDATA[Z -> A]]></string>
     <string name="sorting_oldest_first">Les plus anciens d\'abord</string>
     <string name="sorting_newest_first">Les plus récents d\'abord</string>
+    <string name="project_tartampion">Projet Tartampion</string>
+    <string name="project_lucidia">Projet Lucidia</string>
+    <string name="project_circus">Projet Circus</string>
 </resources>
