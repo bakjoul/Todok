@@ -6,10 +6,15 @@ import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
+import com.bakjoul.todok.ui.tasks.TaskAdapter
+import com.bakjoul.todok.ui.tasks.TasksViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TasksFragment : Fragment() {
 
     companion object {
@@ -18,6 +23,7 @@ class TasksFragment : Fragment() {
 
     private var _binding: TaskFragmentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<TasksViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,8 +35,15 @@ class TasksFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setMenu()
         super.onViewCreated(view, savedInstanceState)
+
+        setMenu()
+
+        val adapter = TaskAdapter()
+        binding.taskRecyclerView.adapter = adapter
+        viewModel.viewStateLiveData.observe(viewLifecycleOwner) { taskViewStates ->
+            adapter.submitList(taskViewStates)
+        }
 
     }
 
