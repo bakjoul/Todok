@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.ActivityMainBinding
+import com.example.todok.ui.NavigationListener
+import com.example.todok.ui.add_tasks.AddTasksDialogFragment
 import com.example.todok.ui.tasks.TasksFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationListener {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -29,5 +31,9 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
 
         _binding = null
+    }
+
+    override fun displayAddTaskDialog() {
+        AddTasksDialogFragment.newInstance().show(supportFragmentManager, null)
     }
 }

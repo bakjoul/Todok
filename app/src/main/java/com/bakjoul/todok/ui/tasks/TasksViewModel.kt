@@ -9,6 +9,7 @@ import com.bakjoul.todok.domain.project.ProjectEntity
 import com.bakjoul.todok.domain.task.DeleteTaskUseCase
 import com.bakjoul.todok.domain.task.GetTasksUseCase
 import com.bakjoul.todok.domain.task.TaskEntity
+import com.bakjoul.todok.ui.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -41,6 +42,7 @@ class TasksViewModel @Inject constructor(
                             }
                             .sortedBy { it.taskId }
                             .toList()
+
                         TaskSortingType.TASK_REVERSE_CHRONOLOGICAL -> tasks.asSequence()
                             .flatMap { task ->
                                 val project = projects.first() { it.id == task.projectId }
@@ -48,6 +50,7 @@ class TasksViewModel @Inject constructor(
                             }
                             .sortedByDescending { it.taskId }
                             .toList()
+
                         TaskSortingType.PROJECT_ALPHABETICAL -> tasks.asSequence()
                             .flatMap { task ->
                                 val project = projects.first() { it.id == task.projectId }
@@ -55,6 +58,7 @@ class TasksViewModel @Inject constructor(
                             }
                             .sortedBy { it.project }
                             .toList()
+
                         TaskSortingType.PROJECT_REVERSE_ALPHABETICAL -> tasks.asSequence()
                             .flatMap { task ->
                                 val project = projects.first() { it.id == task.projectId }
@@ -68,6 +72,8 @@ class TasksViewModel @Inject constructor(
 
         }
 
+    val singleLiveEvent = SingleLiveEvent<TasksEvent>()
+
     private fun mapItem(task: TaskEntity, project: ProjectEntity): TaskViewStateItem {
         return TaskViewStateItem(
             taskId = task.id,
@@ -77,4 +83,7 @@ class TasksViewModel @Inject constructor(
         )
     }
 
+    fun onAddButtonClicked() {
+        singleLiveEvent.value = TasksEvent.DisplayAddTaskDialog
+    }
 }

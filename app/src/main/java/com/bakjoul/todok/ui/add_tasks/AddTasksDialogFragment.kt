@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.bakjoul.todok.databinding.AddTaskDialogBinding
 
-class AddTasksFragment : DialogFragment() {
+class AddTasksDialogFragment : DialogFragment() {
 
     companion object {
-        fun newInstance() = AddTasksFragment()
+        fun newInstance() = AddTasksDialogFragment()
     }
 
     private var _binding: AddTaskDialogBinding? = null

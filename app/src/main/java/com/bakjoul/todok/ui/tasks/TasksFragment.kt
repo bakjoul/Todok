@@ -1,8 +1,14 @@
 package com.example.todok.ui.tasks
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -11,7 +17,9 @@ import androidx.lifecycle.Lifecycle
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
 import com.bakjoul.todok.ui.tasks.TaskAdapter
+import com.bakjoul.todok.ui.tasks.TasksEvent
 import com.bakjoul.todok.ui.tasks.TasksViewModel
+import com.example.todok.ui.NavigationListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +33,13 @@ class TasksFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<TasksViewModel>()
 
+    private lateinit var navigationListener: NavigationListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigationListener = context as NavigationListener
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,12 +52,19 @@ class TasksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = TaskAdapter()
+        binding.tasksRecyclerView.adapter = adapter
+        binding.tasksFabAdd.setOnClickListener { viewModel.onAddButtonClicked() }
         setMenu()
 
-        val adapter = TaskAdapter()
-        binding.taskRecyclerView.adapter = adapter
         viewModel.viewStateLiveData.observe(viewLifecycleOwner) { taskViewStates ->
             adapter.submitList(taskViewStates)
+        }
+
+        viewModel.singleLiveEvent.observe(viewLifecycleOwner) { tasksEvent ->
+            when (tasksEvent) {
+                TasksEvent.DisplayAddTaskDialog -> navigationListener.displayAddTaskDialog()
+            }
         }
 
     }
@@ -59,18 +81,22 @@ class TasksFragment : Fragment() {
                         Log.d("test", "onMenuItemSelected: 1")
                         true
                     }
+
                     R.id.filter_alphabetical_inverted -> {
                         Log.d("test", "onMenuItemSelected: 2")
                         true
                     }
+
                     R.id.filter_oldest_first -> {
                         Log.d("test", "onMenuItemSelected: 3")
                         true
                     }
+
                     R.id.filter_recent_first -> {
                         Log.d("test", "onMenuItemSelected: 4")
                         true
                     }
+
                     else -> false
                 }
                 return false
