@@ -1,4 +1,4 @@
-package com.bakjoul.todok.data
+package com.bakjoul.todok.domain
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
