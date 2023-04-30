@@ -7,16 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bakjoul.todok.databinding.TaskItemBinding
 
-class TaskAdapter : ListAdapter<TaskViewStateItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
+class TaskAdapter : ListAdapter<TaskItemViewState, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            TaskItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        return ViewHolder(TaskItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -25,24 +19,24 @@ class TaskAdapter : ListAdapter<TaskViewStateItem, TaskAdapter.ViewHolder>(TaskD
 
     inner class ViewHolder(private val binding: TaskItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TaskViewStateItem) {
-            binding.apply {
-                // TODO
-            }
+        fun bind(item: TaskItemViewState) {
+            binding.taskItemProjectColor.setColorFilter(item.projectColor)
+            binding.taskItemProject.text = item.project
+            binding.taskItemDescription.text = item.description
         }
     }
 
-    object TaskDiffCallback : DiffUtil.ItemCallback<TaskViewStateItem>() {
+    object TaskDiffCallback : DiffUtil.ItemCallback<TaskItemViewState>() {
         override fun areItemsTheSame(
-            oldItem: TaskViewStateItem,
-            newItem: TaskViewStateItem
+            oldItem: TaskItemViewState,
+            newItem: TaskItemViewState
         ): Boolean {
             return oldItem.taskId == newItem.taskId
         }
 
         override fun areContentsTheSame(
-            oldItem: TaskViewStateItem,
-            newItem: TaskViewStateItem
+            oldItem: TaskItemViewState,
+            newItem: TaskItemViewState
         ): Boolean {
             return oldItem == newItem
         }

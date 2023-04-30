@@ -18,7 +18,7 @@ import com.bakjoul.todok.domain.project.ProjectEntity
 )
 data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo(index = true)
     val projectId: Long,
     val description: String

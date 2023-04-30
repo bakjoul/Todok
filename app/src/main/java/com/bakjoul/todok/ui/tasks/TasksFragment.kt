@@ -1,4 +1,4 @@
-package com.example.todok.ui.tasks
+package com.bakjoul.todok.ui.tasks
 
 import android.content.Context
 import android.os.Bundle
@@ -16,10 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.TaskFragmentBinding
-import com.bakjoul.todok.ui.tasks.TaskAdapter
-import com.bakjoul.todok.ui.tasks.TasksEvent
-import com.bakjoul.todok.ui.tasks.TasksViewModel
-import com.example.todok.ui.NavigationListener
+import com.bakjoul.todok.ui.NavigationListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,6 +56,8 @@ class TasksFragment : Fragment() {
 
         viewModel.viewStateLiveData.observe(viewLifecycleOwner) { taskViewStates ->
             adapter.submitList(taskViewStates)
+            if (taskViewStates.isEmpty()) binding.noTask.visibility = View.VISIBLE
+            else binding.noTask.visibility = View.GONE
         }
 
         viewModel.singleLiveEvent.observe(viewLifecycleOwner) { tasksEvent ->

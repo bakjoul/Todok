@@ -3,7 +3,7 @@ package com.bakjoul.todok.ui.tasks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.bakjoul.todok.data.CoroutineDispatcherProvider
+import com.bakjoul.todok.domain.CoroutineDispatcherProvider
 import com.bakjoul.todok.domain.project.GetProjectsUseCase
 import com.bakjoul.todok.domain.project.ProjectEntity
 import com.bakjoul.todok.domain.task.DeleteTaskUseCase
@@ -26,7 +26,7 @@ class TasksViewModel @Inject constructor(
 
     private val taskSortingMutableStateFlow = MutableStateFlow(TaskSortingType.TASK_CHRONOLOGICAL)
 
-    val viewStateLiveData: LiveData<List<TaskViewStateItem>> =
+    val viewStateLiveData: LiveData<List<TaskItemViewState>> =
         liveData(coroutineDispatcherProvider.io) {
             combine(
                 getTasksUseCase.invoke(),
@@ -74,8 +74,8 @@ class TasksViewModel @Inject constructor(
 
     val singleLiveEvent = SingleLiveEvent<TasksEvent>()
 
-    private fun mapItem(task: TaskEntity, project: ProjectEntity): TaskViewStateItem {
-        return TaskViewStateItem(
+    private fun mapItem(task: TaskEntity, project: ProjectEntity): TaskItemViewState {
+        return TaskItemViewState(
             taskId = task.id,
             projectColor = project.color,
             description = task.description,
