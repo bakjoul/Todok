@@ -14,4 +14,6 @@
     <string name="project_tartampion">Projet Tartampion</string>
     <string name="project_lucidia">Projet Lucidia</string>
     <string name="project_circus">Projet Circus</string>
+    <string name="add_task_dialog_error_task_description">Veuillez saisir une tâche</string>
+    <string name="add_task_dialog_error_project">Veuillez selectionner un projet</string>
 </resources>
