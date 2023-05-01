@@ -1,0 +1,35 @@
+koverReport {
+    filters {
+        excludes {
+            annotatedBy(
+                    "dagger.Module",
+                    "dagger.internal.DaggerGenerated",
+                    "androidx.room.Database"
+            )
+            packages(
+                    "hilt_aggregated_deps", // Hilt generated injectors
+                    "*.databinding", // View Binding
+                    "*utils" // Utils
+            )
+            classes(
+                    "*_*Factory\$*", // Hilt
+
+                    "*.BuildConfig", // Gradle generated
+
+                    // Room
+                    "*_Impl",
+                    "*_Impl\$*",
+                    "*AppDatabase\$*",
+
+                    // Android UI
+                    "*MainApplication",
+                    "*Activity",
+                    "*Activity\$*",
+                    "*Fragment",
+                    "*Fragment\$*",
+                    "*Adapter",
+                    "*Adapter\$*"
+            )
+        }
+    }
+}
