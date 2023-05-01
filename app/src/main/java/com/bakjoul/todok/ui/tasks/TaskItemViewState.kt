@@ -7,5 +7,6 @@ data class TaskItemViewState(
     @get:ColorInt @param:ColorInt
     val projectColor: Int,
     val description: String,
-    val project: String
+    val project: String,
+    val onDeleteEvent: () -> Unit
 )

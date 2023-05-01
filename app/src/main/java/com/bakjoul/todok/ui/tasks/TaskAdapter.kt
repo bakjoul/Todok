@@ -23,6 +23,7 @@ class TaskAdapter : ListAdapter<TaskItemViewState, TaskAdapter.ViewHolder>(TaskD
             binding.taskItemProjectColor.setColorFilter(item.projectColor)
             binding.taskItemProject.text = item.project
             binding.taskItemDescription.text = item.description
+            binding.taskItemDelete.setOnClickListener { item.onDeleteEvent() }
         }
     }
 

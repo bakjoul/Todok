@@ -3,6 +3,7 @@ package com.bakjoul.todok.ui.tasks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.bakjoul.todok.domain.CoroutineDispatcherProvider
 import com.bakjoul.todok.domain.project.GetProjectsUseCase
 import com.bakjoul.todok.domain.project.ProjectEntity
@@ -14,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -79,7 +81,12 @@ class TasksViewModel @Inject constructor(
             taskId = task.id,
             projectColor = project.color,
             description = task.description,
-            project = project.name
+            project = project.name,
+            onDeleteEvent = {
+                viewModelScope.launch(coroutineDispatcherProvider.io) {
+                    deleteTaskUseCase.invoke(task.id)
+                }
+            }
         )
     }
 
