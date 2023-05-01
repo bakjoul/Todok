@@ -31,9 +31,6 @@ class AddTaskViewModel @Inject constructor(
     private val projectIdMutableStateFlow = MutableStateFlow<Long?>(null)
     private val hasAddButtonBeenClicked = MutableStateFlow(false)
 
-    private var taskDescription: String? = null
-    private var projectId: Long? = null
-
     val singleLiveEvent = SingleLiveEvent<AddTaskEvent>()
 
     val viewStateLiveData: LiveData<AddTaskViewState> = liveData {
@@ -69,19 +66,17 @@ class AddTaskViewModel @Inject constructor(
 
     fun onTaskDescriptionChanged(taskDescription: String?) {
         taskDescriptionMutableStateFlow.value = taskDescription
-        this.taskDescription = taskDescription
     }
 
     fun onProjectSelected(projectId: Long) {
         projectIdMutableStateFlow.value = projectId
-        this.projectId = projectId
     }
 
     fun onAddButtonClicked() {
         hasAddButtonBeenClicked.value = true
 
-        val capturedTaskDescription = taskDescription
-        val capturedProjectId = projectId
+        val capturedTaskDescription = taskDescriptionMutableStateFlow.value
+        val capturedProjectId = projectIdMutableStateFlow.value
 
         if (!capturedTaskDescription.isNullOrEmpty() && capturedProjectId != null) {
             viewModelScope.launch(coroutineDispatcherProvider.io) {
