@@ -5,9 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InsertTaskUseCase @Inject constructor(
-    private val taskDao: TaskDao
-) {
+class InsertTaskUseCase @Inject constructor(private val taskDao: TaskDao) {
     suspend fun invoke(taskEntity: TaskEntity): Boolean = try {
         taskDao.insert(taskEntity)
         true

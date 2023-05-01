@@ -6,8 +6,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetTasksUseCase @Inject constructor(
-    private val taskDao: TaskDao
-) {
+class GetTasksUseCase @Inject constructor(private val taskDao: TaskDao) {
     fun invoke(): Flow<List<TaskEntity>> = taskDao.getAllTasks()
 }

@@ -5,9 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DeleteTaskUseCase @Inject constructor(
-    private val taskDao: TaskDao
-) {
+class DeleteTaskUseCase @Inject constructor(private val taskDao: TaskDao) {
     suspend fun invoke(taskId: Long) {
         taskDao.delete(taskId)
     }
