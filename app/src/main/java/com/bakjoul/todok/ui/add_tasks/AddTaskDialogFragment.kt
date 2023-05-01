@@ -1,4 +1,4 @@
-package com.example.todok.ui.add_tasks
+package com.bakjoul.todok.ui.add_tasks
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.bakjoul.todok.databinding.AddTaskDialogBinding
-import com.bakjoul.todok.ui.add_tasks.AddTaskEvent
-import com.bakjoul.todok.ui.add_tasks.AddTaskProjectSpinnerAdapter
-import com.bakjoul.todok.ui.add_tasks.AddTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

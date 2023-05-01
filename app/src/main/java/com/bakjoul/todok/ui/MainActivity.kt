@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.ActivityMainBinding
-import com.example.todok.ui.add_tasks.AddTaskDialogFragment
+import com.bakjoul.todok.ui.add_tasks.AddTaskDialogFragment
 import com.bakjoul.todok.ui.tasks.TasksFragment
 import dagger.hilt.android.AndroidEntryPoint
 
