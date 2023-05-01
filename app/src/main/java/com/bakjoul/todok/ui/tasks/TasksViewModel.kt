@@ -90,6 +90,10 @@ class TasksViewModel @Inject constructor(
         )
     }
 
+    fun onSortingTypeChanged(taskSortingType: TaskSortingType) {
+        taskSortingMutableStateFlow.value = taskSortingType
+    }
+
     fun onAddButtonClicked() {
         singleLiveEvent.value = TasksEvent.DisplayAddTaskDialog
     }

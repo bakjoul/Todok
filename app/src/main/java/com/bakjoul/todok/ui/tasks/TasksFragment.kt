@@ -2,7 +2,6 @@ package com.bakjoul.todok.ui.tasks
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -74,31 +73,28 @@ class TasksFragment : Fragment() {
                 menuInflater.inflate(R.menu.actions, menu)
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.filter_alphabetical -> {
-                        Log.d("test", "onMenuItemSelected: 1")
-                        true
-                    }
-
-                    R.id.filter_alphabetical_inverted -> {
-                        Log.d("test", "onMenuItemSelected: 2")
-                        true
-                    }
-
-                    R.id.filter_oldest_first -> {
-                        Log.d("test", "onMenuItemSelected: 3")
-                        true
-                    }
-
-                    R.id.filter_recent_first -> {
-                        Log.d("test", "onMenuItemSelected: 4")
-                        true
-                    }
-
-                    else -> false
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
+                R.id.filter_alphabetical -> {
+                    viewModel.onSortingTypeChanged(TaskSortingType.PROJECT_ALPHABETICAL)
+                    true
                 }
-                return false
+
+                R.id.filter_alphabetical_inverted -> {
+                    viewModel.onSortingTypeChanged(TaskSortingType.PROJECT_REVERSE_ALPHABETICAL)
+                    true
+                }
+
+                R.id.filter_oldest_first -> {
+                    viewModel.onSortingTypeChanged(TaskSortingType.TASK_CHRONOLOGICAL)
+                    true
+                }
+
+                R.id.filter_recent_first -> {
+                    viewModel.onSortingTypeChanged(TaskSortingType.TASK_REVERSE_CHRONOLOGICAL)
+                    true
+                }
+
+                else -> false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
