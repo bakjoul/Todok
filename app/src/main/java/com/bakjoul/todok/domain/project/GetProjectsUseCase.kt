@@ -6,8 +6,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetProjectsUseCase @Inject constructor(
-    private val projectDao: ProjectDao
-) {
+class GetProjectsUseCase @Inject constructor(private val projectDao: ProjectDao) {
     fun invoke(): Flow<List<ProjectEntity>> = projectDao.getAllProjects()
 }

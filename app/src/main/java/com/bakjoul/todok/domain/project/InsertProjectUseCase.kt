@@ -5,9 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InsertProjectUseCase @Inject constructor(
-    private val projectDao: ProjectDao
-) {
+class InsertProjectUseCase @Inject constructor(private val projectDao: ProjectDao) {
     suspend fun invoke(projectEntity: ProjectEntity) {
         projectDao.insert(projectEntity)
     }
