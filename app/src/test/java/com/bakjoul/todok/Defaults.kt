@@ -2,8 +2,7 @@ package com.bakjoul.todok
 
 import com.bakjoul.todok.domain.project.ProjectEntity
 import com.bakjoul.todok.domain.task.TaskEntity
-import com.bakjoul.todok.ui.tasks.TaskItemViewState
-import com.bakjoul.todok.ui.utils.EquatableCallback
+import com.bakjoul.todok.ui.add_tasks.AddTaskProjectItemViewState
 
 fun getDefaultProjectEntity(projectId: Long) = ProjectEntity(
     id = projectId,
@@ -29,12 +28,8 @@ fun getDefaultProjectEntities() = listOf(
     getDefaultProjectEntity(projectId = 2)
 )
 
-fun getDefaultTaskItemViewState(taskId: Long, projectId: Long) =
-    TaskItemViewState(
-        taskId = getDefaultTaskEntity(taskId, projectId).id,
-        projectColor = getDefaultProjectEntity(projectId).color,
-        description = getDefaultTaskEntity(taskId, projectId).description,
-        project = getDefaultProjectEntity(projectId).name,
-        onDeleteEvent = EquatableCallback { }
-    )
-
+fun getDefaultProjectItemViewState(projectId: Long) = AddTaskProjectItemViewState(
+    projectId = projectId,
+    projectColor = getDefaultProjectEntity(projectId).color,
+    projectName = getDefaultProjectEntity(projectId).name,
+)

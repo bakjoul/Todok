@@ -7,8 +7,10 @@ import com.bakjoul.todok.domain.project.GetProjectsUseCase
 import com.bakjoul.todok.domain.task.DeleteTaskUseCase
 import com.bakjoul.todok.domain.task.GetTasksUseCase
 import com.bakjoul.todok.getDefaultProjectEntities
+import com.bakjoul.todok.getDefaultProjectEntity
 import com.bakjoul.todok.getDefaultTaskEntities
-import com.bakjoul.todok.getDefaultTaskItemViewState
+import com.bakjoul.todok.getDefaultTaskEntity
+import com.bakjoul.todok.ui.utils.EquatableCallback
 import com.bakjoul.todok.utils.TestCoroutineRule
 import com.bakjoul.todok.utils.observeForTesting
 import io.mockk.coJustRun
@@ -122,6 +124,15 @@ class TasksViewModelTest {
     }
 
     // region OUT
+    private fun getDefaultTaskItemViewState(taskId: Long, projectId: Long) =
+        TaskItemViewState(
+            taskId = getDefaultTaskEntity(taskId, projectId).id,
+            projectColor = getDefaultProjectEntity(projectId).color,
+            description = getDefaultTaskEntity(taskId, projectId).description,
+            project = getDefaultProjectEntity(projectId).name,
+            onDeleteEvent = EquatableCallback { }
+        )
+
     private fun getDefaultTaskItemViewStates() = listOf(
         getDefaultTaskItemViewState(0, 0),
         getDefaultTaskItemViewState(1, 1),
