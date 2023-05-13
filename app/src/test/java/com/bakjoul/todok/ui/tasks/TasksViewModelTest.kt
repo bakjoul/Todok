@@ -12,9 +12,13 @@ import com.bakjoul.todok.getDefaultTaskItemViewState
 import com.bakjoul.todok.utils.TestCoroutineRule
 import com.bakjoul.todok.utils.observeForTesting
 import io.mockk.coJustRun
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runCurrent
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,13 +50,75 @@ class TasksViewModelTest {
     }
 
     @Test
-    fun `nominal case - sorted chronologically`() = testCoroutineRule.runTest {
+    fun `initial case - sorted chronologically`() = testCoroutineRule.runTest {
         // When
         tasksViewModel.viewStateLiveData.observeForTesting(this) {
 
             // Then
             assertThat(it.value).isEqualTo(getDefaultTaskItemViewStates())
         }
+    }
+
+    @Test
+    fun `nominal case - sorted chronologically reversed`() = testCoroutineRule.runTest {
+        // Given
+        tasksViewModel.onSortingTypeChanged(TaskSortingType.TASK_REVERSE_CHRONOLOGICAL)
+
+        // When
+        tasksViewModel.viewStateLiveData.observeForTesting(this) {
+
+            // Then
+            assertThat(it.value).isEqualTo(getDefaultTaskItemViewStates().asReversed())
+        }
+    }
+
+    @Test
+    fun `nominal case - sorted alphabetically by project`() = testCoroutineRule.runTest {
+        // Given
+        tasksViewModel.onSortingTypeChanged(TaskSortingType.PROJECT_ALPHABETICAL)
+
+        // When
+        tasksViewModel.viewStateLiveData.observeForTesting(this) {
+
+            // Then
+            assertThat(it.value).isEqualTo(getDefaultTaskItemViewStates())
+        }
+    }
+
+    @Test
+    fun `nominal case - sorted alphabetically reversed by project`() = testCoroutineRule.runTest {
+        // Given
+        tasksViewModel.onSortingTypeChanged(TaskSortingType.PROJECT_REVERSE_ALPHABETICAL)
+
+        // When
+        tasksViewModel.viewStateLiveData.observeForTesting(this) {
+
+            // Then
+            assertThat(it.value).isEqualTo(getDefaultTaskItemViewStates().asReversed())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `edge case - delete task`() = testCoroutineRule.runTest {
+        // When
+        tasksViewModel.viewStateLiveData.observeForTesting(this) {
+            (it.value?.first() as TaskItemViewState).onDeleteEvent.invoke()
+            runCurrent()
+
+            // Then
+            coVerify(exactly = 1) { deleteTaskUseCase.invoke(0) }
+            confirmVerified(deleteTaskUseCase)
+        }
+    }
+
+    @Test
+    fun `verify onAddButtonClicked`() = testCoroutineRule.runTest {
+        // When
+        tasksViewModel.onAddButtonClicked()
+
+        // Then
+        assertThat(tasksViewModel.singleLiveEvent.value).isEqualTo(TasksEvent.DisplayAddTaskDialog)
     }
 
     // region OUT
