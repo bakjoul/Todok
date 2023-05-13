@@ -10,6 +10,7 @@ import com.bakjoul.todok.domain.project.ProjectEntity
 import com.bakjoul.todok.domain.task.DeleteTaskUseCase
 import com.bakjoul.todok.domain.task.GetTasksUseCase
 import com.bakjoul.todok.domain.task.TaskEntity
+import com.bakjoul.todok.ui.utils.EquatableCallback
 import com.bakjoul.todok.ui.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,7 +83,7 @@ class TasksViewModel @Inject constructor(
             projectColor = project.color,
             description = task.description,
             project = project.name,
-            onDeleteEvent = {
+            onDeleteEvent = EquatableCallback {
                 viewModelScope.launch(coroutineDispatcherProvider.io) {
                     deleteTaskUseCase.invoke(task.id)
                 }

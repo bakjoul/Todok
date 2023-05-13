@@ -1,6 +1,7 @@
 package com.bakjoul.todok.ui.tasks
 
 import androidx.annotation.ColorInt
+import com.bakjoul.todok.ui.utils.EquatableCallback
 
 data class TaskItemViewState(
     val taskId: Long,
@@ -8,5 +9,5 @@ data class TaskItemViewState(
     val projectColor: Int,
     val description: String,
     val project: String,
-    val onDeleteEvent: () -> Unit
+    val onDeleteEvent: EquatableCallback
 )
