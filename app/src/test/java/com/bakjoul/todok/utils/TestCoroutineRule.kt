@@ -4,7 +4,6 @@ import com.bakjoul.todok.domain.CoroutineDispatcherProvider
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
@@ -16,10 +15,9 @@ import org.junit.runners.model.Statement
 
 class TestCoroutineRule : TestRule {
 
-    val testCoroutineDispatcher = StandardTestDispatcher()
+    private val testCoroutineDispatcher = StandardTestDispatcher()
     private val testCoroutineScope = TestScope(testCoroutineDispatcher)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun apply(base: Statement, description: Description): Statement =
         object : Statement() {
             @Throws(Throwable::class)
