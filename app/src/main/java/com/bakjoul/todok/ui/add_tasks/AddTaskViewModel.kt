@@ -49,7 +49,7 @@ class AddTaskViewModel @Inject constructor(
                             projectName = project.name
                         )
                     },
-                    taskDescriptionError = if (taskDescription.isNullOrEmpty() && addButtonClicked) {
+                    taskDescriptionError = if (taskDescription.isNullOrBlank() && addButtonClicked) {
                         application.getString(R.string.add_task_dialog_error_task_description)
                     } else {
                         null
@@ -78,7 +78,7 @@ class AddTaskViewModel @Inject constructor(
         val capturedTaskDescription = taskDescriptionMutableStateFlow.value
         val capturedProjectId = projectIdMutableStateFlow.value
 
-        if (!capturedTaskDescription.isNullOrEmpty() && capturedProjectId != null) {
+        if (!capturedTaskDescription.isNullOrBlank() && capturedProjectId != null) {
             viewModelScope.launch(coroutineDispatcherProvider.io) {
                 val success = insertTaskUseCase.invoke(
                     TaskEntity(
@@ -88,8 +88,10 @@ class AddTaskViewModel @Inject constructor(
                 )
 
                 withContext(coroutineDispatcherProvider.main) {
-                    if (success) {
-                        singleLiveEvent.value = AddTaskEvent.Dismiss
+                    singleLiveEvent.value = if (success) {
+                        AddTaskEvent.Dismiss
+                    } else {
+                        AddTaskEvent.InsertionError
                     }
                 }
             }
