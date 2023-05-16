@@ -16,4 +16,5 @@
     <string name="project_circus">Projet Circus</string>
     <string name="add_task_dialog_error_task_description">Veuillez saisir une tâche</string>
     <string name="add_task_dialog_error_project">Veuillez selectionner un projet</string>
+    <string name="add_task_insertion_error_toast">Impossible d\'ajouter la tâche…</string>
 </resources>
