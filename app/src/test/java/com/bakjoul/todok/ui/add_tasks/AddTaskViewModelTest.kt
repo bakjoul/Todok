@@ -18,6 +18,7 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runCurrent
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,31 +42,20 @@ class AddTaskViewModelTest {
     private val insertTaskUseCase: InsertTaskUseCase = mockk()
     private val getProjectsUseCase: GetProjectsUseCase = mockk()
 
-    /*    private val addTaskViewModel = AddTaskViewModel(
-            application = application,
-            insertTaskUseCase = insertTaskUseCase,
-            getProjectsUseCase = getProjectsUseCase,
-            coroutineDispatcherProvider = testCoroutineRule.getTestCoroutineDispatcherProvider(),
-        )*/
-
-    private lateinit var addTaskViewModel: AddTaskViewModel
+    private val addTaskViewModel = AddTaskViewModel(
+        application = application,
+        insertTaskUseCase = insertTaskUseCase,
+        getProjectsUseCase = getProjectsUseCase,
+        coroutineDispatcherProvider = testCoroutineRule.getTestCoroutineDispatcherProvider(),
+    )
 
     @Before
     fun setUp() {
-        coEvery { insertTaskUseCase.invoke(any()) } coAnswers {
-            true
-        }
+        coEvery { insertTaskUseCase.invoke(any()) } coAnswers { true }
         every { getProjectsUseCase.invoke() } returns flowOf(getDefaultProjectEntities())
 
         every { application.getString(R.string.add_task_dialog_error_task_description) } returns ERROR_TASK_DESCRIPTION
         every { application.getString(R.string.add_task_dialog_error_project) } returns ERROR_PROJECT
-
-        addTaskViewModel = AddTaskViewModel(
-            application = application,
-            insertTaskUseCase = insertTaskUseCase,
-            getProjectsUseCase = getProjectsUseCase,
-            coroutineDispatcherProvider = testCoroutineRule.getTestCoroutineDispatcherProvider(),
-        )
     }
 
     @Test
@@ -185,32 +175,25 @@ class AddTaskViewModelTest {
     fun `error case - add button clicked with valid inputs but insertion error`() =
         testCoroutineRule.runTest {
             // Given
+            coEvery { insertTaskUseCase.invoke(any()) } returns false
             addTaskViewModel.onTaskDescriptionChanged(DEFAULT_TASK_DESCRIPTION)
             addTaskViewModel.onProjectSelected(DEFAULT_PROJECT_ID)
-            addTaskViewModel.onAddButtonClicked()
-            coEvery { insertTaskUseCase.invoke(any()) } returns false
 
             // When
-            addTaskViewModel.viewStateLiveData.observeForTesting(this) {
+            addTaskViewModel.onAddButtonClicked()
+            runCurrent()
 
-                // Then
-                assertThat(it.value).isEqualTo(
-                    getExpectedAddTaskViewState(
-                        withTaskDescriptionError = false,
-                        withProjectError = false
+            // Then
+            assertThat(addTaskViewModel.singleLiveEvent.value).isEqualTo(AddTaskEvent.InsertionError)
+            coVerify(exactly = 1) {
+                insertTaskUseCase.invoke(
+                    TaskEntity(
+                        description = DEFAULT_TASK_DESCRIPTION,
+                        projectId = DEFAULT_PROJECT_ID
                     )
                 )
-                assertThat(addTaskViewModel.singleLiveEvent.value).isEqualTo(AddTaskEvent.InsertionError)
-                coVerify(exactly = 1) {
-                    insertTaskUseCase.invoke(
-                        TaskEntity(
-                            description = DEFAULT_TASK_DESCRIPTION,
-                            projectId = DEFAULT_PROJECT_ID
-                        )
-                    )
-                }
-                confirmVerified(insertTaskUseCase)
             }
+            confirmVerified(insertTaskUseCase)
         }
 
     @Test

@@ -33,7 +33,7 @@ class AddTaskViewModel @Inject constructor(
 
     val singleLiveEvent = SingleLiveEvent<AddTaskEvent>()
 
-    val viewStateLiveData: LiveData<AddTaskViewState> = liveData {
+    val viewStateLiveData: LiveData<AddTaskViewState> = liveData(coroutineDispatcherProvider.io) {
         combine(
             getProjectsUseCase.invoke(),
             taskDescriptionMutableStateFlow,
