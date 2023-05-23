@@ -37,42 +37,14 @@ class TasksViewModel @Inject constructor(
                 taskSortingMutableStateFlow
             ) { tasks, projects, taskSorting ->
                 emit(
-                    when (taskSorting) {
-                        TaskSortingType.TASK_CHRONOLOGICAL -> tasks.asSequence()
-                            .flatMap { task ->
-                                val project = projects.first() { it.id == task.projectId }
-                                sequenceOf(mapItem(task, project))
-                            }
-                            .sortedBy { it.taskId }
-                            .toList()
-
-                        TaskSortingType.TASK_REVERSE_CHRONOLOGICAL -> tasks.asSequence()
-                            .flatMap { task ->
-                                val project = projects.first() { it.id == task.projectId }
-                                sequenceOf(mapItem(task, project))
-                            }
-                            .sortedByDescending { it.taskId }
-                            .toList()
-
-                        TaskSortingType.PROJECT_ALPHABETICAL -> tasks.asSequence()
-                            .flatMap { task ->
-                                val project = projects.first() { it.id == task.projectId }
-                                sequenceOf(mapItem(task, project))
-                            }
-                            .sortedBy { it.project }
-                            .toList()
-
-                        TaskSortingType.PROJECT_REVERSE_ALPHABETICAL -> tasks.asSequence()
-                            .flatMap { task ->
-                                val project = projects.first() { it.id == task.projectId }
-                                sequenceOf(mapItem(task, project))
-                            }
-                            .sortedByDescending { it.project }
-                            .toList()
-                    }
+                    taskSorting.sort(
+                        tasks.map { task ->
+                            val project = projects.first { it.id == task.projectId }
+                            mapItem(task, project)
+                        }
+                    )
                 )
             }.collect()
-
         }
 
     val singleLiveEvent = SingleLiveEvent<TasksEvent>()
