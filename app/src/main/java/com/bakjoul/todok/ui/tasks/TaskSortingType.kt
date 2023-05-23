@@ -13,12 +13,12 @@ enum class TaskSortingType(val sort: (List<TaskItemViewState>) -> List<TaskItemV
     ),
     PROJECT_ALPHABETICAL(
         sort = { items ->
-            items.sortedBy { it.taskId }
+            items.sortedBy { it.project }
         }
     ),
     PROJECT_REVERSE_ALPHABETICAL(
         sort = { items ->
-            items.sortedByDescending { it.taskId }
+            items.sortedByDescending { it.project }
         }
     )
 }
