@@ -29,7 +29,7 @@ class AddTaskViewModel @Inject constructor(
 
     private val taskDescriptionMutableStateFlow = MutableStateFlow<String?>(null)
     private val projectIdMutableStateFlow = MutableStateFlow<Long?>(null)
-    private val hasAddButtonBeenClicked = MutableStateFlow(false)
+    private val hasAddButtonBeenClickedFlow = MutableStateFlow(false)
 
     val singleLiveEvent = SingleLiveEvent<AddTaskEvent>()
 
@@ -38,7 +38,7 @@ class AddTaskViewModel @Inject constructor(
             getProjectsUseCase.invoke(),
             taskDescriptionMutableStateFlow,
             projectIdMutableStateFlow,
-            hasAddButtonBeenClicked
+            hasAddButtonBeenClickedFlow
         ) { projects, taskDescription, projectId, addButtonClicked ->
             emit(
                 AddTaskViewState(
@@ -73,7 +73,7 @@ class AddTaskViewModel @Inject constructor(
     }
 
     fun onAddButtonClicked() {
-        hasAddButtonBeenClicked.value = true
+        hasAddButtonBeenClickedFlow.value = true
 
         val capturedTaskDescription = taskDescriptionMutableStateFlow.value
         val capturedProjectId = projectIdMutableStateFlow.value

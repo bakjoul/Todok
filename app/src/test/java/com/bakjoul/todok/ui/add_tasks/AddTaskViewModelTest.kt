@@ -67,10 +67,7 @@ class AddTaskViewModelTest {
 
             // Then
             assertThat(it.value).isEqualTo(
-                getExpectedAddTaskViewState(
-                    withTaskDescriptionError = false,
-                    withProjectError = false
-                )
+                getExpectedAddTaskViewState()
             )
         }
     }
@@ -86,12 +83,7 @@ class AddTaskViewModelTest {
         addTaskViewModel.viewStateLiveData.observeForTesting(this) {
 
             // Then
-            assertThat(it.value).isEqualTo(
-                getExpectedAddTaskViewState(
-                    withTaskDescriptionError = false,
-                    withProjectError = false
-                )
-            )
+            assertThat(it.value).isEqualTo(getExpectedAddTaskViewState())
             assertThat(addTaskViewModel.singleLiveEvent.value).isEqualTo(AddTaskEvent.Dismiss)
         }
     }
@@ -106,9 +98,9 @@ class AddTaskViewModelTest {
 
             // Then
             assertThat(it.value).isEqualTo(
-                getExpectedAddTaskViewState(
-                    withTaskDescriptionError = true,
-                    withProjectError = true
+                getExpectedAddTaskViewState().copy(
+                    taskDescriptionError = ERROR_TASK_DESCRIPTION,
+                    projectError = ERROR_PROJECT,
                 )
             )
         }
@@ -125,9 +117,9 @@ class AddTaskViewModelTest {
 
             // Then
             assertThat(it.value).isEqualTo(
-                getExpectedAddTaskViewState(
-                    withTaskDescriptionError = true,
-                    withProjectError = false
+
+                getExpectedAddTaskViewState().copy(
+                    taskDescriptionError = ERROR_TASK_DESCRIPTION,
                 )
             )
         }
@@ -146,9 +138,8 @@ class AddTaskViewModelTest {
 
                 // Then
                 assertThat(it.value).isEqualTo(
-                    getExpectedAddTaskViewState(
-                        withTaskDescriptionError = true,
-                        withProjectError = false
+                    getExpectedAddTaskViewState().copy(
+                        taskDescriptionError = ERROR_TASK_DESCRIPTION,
                     )
                 )
             }
@@ -165,9 +156,8 @@ class AddTaskViewModelTest {
 
             // Then
             assertThat(it.value).isEqualTo(
-                getExpectedAddTaskViewState(
-                    withTaskDescriptionError = false,
-                    withProjectError = true
+                getExpectedAddTaskViewState().copy(
+                    projectError = ERROR_PROJECT,
                 )
             )
         }
@@ -208,12 +198,7 @@ class AddTaskViewModelTest {
             addTaskViewModel.viewStateLiveData.observeForTesting(this) {
 
                 // Then
-                assertThat(it.value).isEqualTo(
-                    getExpectedAddTaskViewState(
-                        withTaskDescriptionError = false,
-                        withProjectError = false
-                    )
-                )
+                assertThat(it.value).isEqualTo(getExpectedAddTaskViewState())
             }
         }
 
@@ -227,12 +212,7 @@ class AddTaskViewModelTest {
             addTaskViewModel.viewStateLiveData.observeForTesting(this) {
 
                 // Then
-                assertThat(it.value).isEqualTo(
-                    getExpectedAddTaskViewState(
-                        withTaskDescriptionError = false,
-                        withProjectError = false
-                    )
-                )
+                assertThat(it.value).isEqualTo(getExpectedAddTaskViewState())
             }
         }
 
@@ -247,27 +227,19 @@ class AddTaskViewModelTest {
             addTaskViewModel.viewStateLiveData.observeForTesting(this) {
 
                 // Then
-                assertThat(it.value).isEqualTo(
-                    getExpectedAddTaskViewState(
-                        withTaskDescriptionError = false,
-                        withProjectError = false
-                    )
-                )
+                assertThat(it.value).isEqualTo(getExpectedAddTaskViewState())
             }
         }
 
     // region OUT
-    private fun getExpectedAddTaskViewState(
-        withTaskDescriptionError: Boolean,
-        withProjectError: Boolean
-    ) = AddTaskViewState(
+    private fun getExpectedAddTaskViewState() = AddTaskViewState(
         listOf(
             getDefaultProjectItemViewState(0),
             getDefaultProjectItemViewState(1),
             getDefaultProjectItemViewState(2)
         ),
-        if (withTaskDescriptionError) ERROR_TASK_DESCRIPTION else null,
-        if (withProjectError) ERROR_PROJECT else null
+        null,
+        null
     )
     // endregion OUT
 }
