@@ -30,6 +30,7 @@ class AddTaskViewModelTest {
         private const val DEFAULT_PROJECT_ID = 1L
         private const val ERROR_TASK_DESCRIPTION = "Veuillez saisir une tâche"
         private const val ERROR_PROJECT = "Veuillez selectionner un projet"
+        private const val ERROR_TASK_INSERTION = "Impossible d'ajouter la tâche…"
     }
 
     @get:Rule
@@ -56,6 +57,7 @@ class AddTaskViewModelTest {
 
         every { application.getString(R.string.add_task_dialog_error_task_description) } returns ERROR_TASK_DESCRIPTION
         every { application.getString(R.string.add_task_dialog_error_project) } returns ERROR_PROJECT
+        every { application.getString(R.string.add_task_insertion_error_toast) } returns ERROR_TASK_INSERTION
     }
 
     @Test
@@ -184,7 +186,7 @@ class AddTaskViewModelTest {
             runCurrent()
 
             // Then
-            assertThat(addTaskViewModel.singleLiveEvent.value).isEqualTo(AddTaskEvent.InsertionError)
+            assertThat(addTaskViewModel.singleLiveEvent.value).isEqualTo(AddTaskEvent.Toast(R.string.add_task_insertion_error_toast))
             coVerify(exactly = 1) {
                 insertTaskUseCase.invoke(
                     TaskEntity(

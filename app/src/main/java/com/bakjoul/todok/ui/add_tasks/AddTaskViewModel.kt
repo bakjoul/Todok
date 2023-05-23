@@ -91,7 +91,7 @@ class AddTaskViewModel @Inject constructor(
                     singleLiveEvent.value = if (success) {
                         AddTaskEvent.Dismiss
                     } else {
-                        AddTaskEvent.InsertionError
+                        AddTaskEvent.Toast(R.string.add_task_insertion_error_toast)
                     }
                 }
             }

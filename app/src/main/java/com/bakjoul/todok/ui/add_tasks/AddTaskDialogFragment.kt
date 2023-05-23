@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.bakjoul.todok.R
 import com.bakjoul.todok.databinding.AddTaskDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -60,7 +59,11 @@ class AddTaskDialogFragment : DialogFragment() {
         viewModel.singleLiveEvent.observe(viewLifecycleOwner) { event ->
             when (event) {
                 is AddTaskEvent.Dismiss -> dismiss()
-                is AddTaskEvent.InsertionError -> Toast.makeText(requireContext(), getString(R.string.add_task_insertion_error_toast), Toast.LENGTH_LONG).show()
+                is AddTaskEvent.Toast -> Toast.makeText(
+                    requireContext(),
+                    getString(event.stringRes),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
